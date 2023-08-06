@@ -4,6 +4,19 @@
 #include <vector>
 #include "SDL.h"
 #include "snake.h"
+#include <memory>
+
+struct SDLWindowDeleter {
+  void operator()(SDL_Window* window) const {
+    SDL_DestroyWindow(window);
+  }
+};
+
+struct SDLRendererDeleter {
+  void operator()(SDL_Renderer* renderer) const {
+    SDL_DestroyRenderer(renderer);
+  }
+};
 
 class Renderer {
 public:
@@ -15,8 +28,8 @@ public:
   void UpdateWindowTitle(int score, int fps, int higherScore);
 
 private:
-  SDL_Window* sdl_window;
-  SDL_Renderer* sdl_renderer;
+  std::unique_ptr<SDL_Window, SDLWindowDeleter> sdl_window;
+  std::unique_ptr<SDL_Renderer, SDLRendererDeleter> sdl_renderer;
 
   const std::size_t screen_width;
   const std::size_t screen_height;
