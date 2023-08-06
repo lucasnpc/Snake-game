@@ -3,15 +3,15 @@
 #include "SDL.h"
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
-    : snake(grid_width, grid_height),
-      engine(dev()),
-      random_w(0, static_cast<int>(grid_width - 1)),
-      random_h(0, static_cast<int>(grid_height - 1)) {
+  : snake(grid_width, grid_height),
+  engine(dev()),
+  random_w(0, static_cast<int>(grid_width - 1)),
+  random_h(0, static_cast<int>(grid_height - 1)) {
   PlaceFood();
 }
 
-void Game::Run(Controller const &controller, Renderer &renderer,
-               std::size_t target_frame_duration, int higherScore) {
+void Game::Run(Controller const& controller, Renderer& renderer,
+  std::size_t target_frame_duration, int higherScore) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
