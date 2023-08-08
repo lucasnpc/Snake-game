@@ -3,8 +3,9 @@
 #include "game.h"
 #include "renderer.h"
 #include "score.h"
+#include "menu.h" 
 
-int main() {
+void executeGame() {
   constexpr std::size_t kFramesPerSecond{ 60 };
   constexpr std::size_t kMsPerFrame{ 1000 / kFramesPerSecond };
   constexpr std::size_t kScreenWidth{ 640 };
@@ -26,6 +27,16 @@ int main() {
   if (opt == "y")
   {
     score.saveScore(game.GetScore());
+  }
+}
+
+int main() {
+
+  Menu menu;
+  menu.waitForStartGame();
+  if (!menu.quit)
+  {
+    executeGame();
   }
 
   return 0;
