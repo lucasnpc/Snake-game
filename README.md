@@ -4,9 +4,16 @@ This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree P
 
 <img src="snake_game.gif"/>
 
-The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
+## Project Rubric
 
-In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
+* Loops, Functions and I/O
+  * In the Project im using many data structures, conditionals, loops and different flows.
+* Object Oriented Programming
+  * The Project was created using OOP programming with classes structure and separating header files from the implementation
+* Memory Management
+  * In the Project im using smart pointers and memory management at classes Renderer, and cleaning its usage at the the end Game::Run method.
+* Concurrency
+  * In the Project im using Mutexes and future to run the Game::Run method, together with it im using mutex lock_guard for safe mutex unlock.
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
