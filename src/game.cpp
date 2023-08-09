@@ -12,6 +12,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
 
 void Game::Run(Controller const& controller, Renderer& renderer,
   std::size_t target_frame_duration, int higherScore) {
+  std::lock_guard<std::mutex> lock(_mutex);
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
@@ -48,6 +49,7 @@ void Game::Run(Controller const& controller, Renderer& renderer,
       SDL_Delay(target_frame_duration - frame_duration);
     }
   }
+  renderer.~Renderer();
 }
 
 void Game::PlaceFood() {
@@ -79,7 +81,7 @@ void Game::Update() {
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
-    snake.speed += 0.02;
+    snake.speed += (0.02 * Game::difficult);
   }
 }
 
