@@ -16,9 +16,8 @@ int Score::getHighestScore() {
         }
         stream.close();
     }
-    
-    int higherScore = *std::max_element(_scores.begin(), _scores.end());
-    return higherScore;
+
+    return !_scores.empty() ? *std::max_element(_scores.begin(), _scores.end()) : 0;
 }
 
 void Score::saveScore(int score) {
