@@ -87,17 +87,17 @@ void Renderer::RenderSnake(Snake const snake, SDL_Rect block) {
   SDL_RenderFillRect(sdl_renderer.get(), &block);
 }
 
-void Renderer::RenderEnemy(Snake const enemySnake, SDL_Rect block) {
+void Renderer::RenderEnemy(Snake const enemy, SDL_Rect block) {
   //Render Enemy Snake Body
-  for (SDL_Point const& point : enemySnake.body) {
+  for (SDL_Point const& point : enemy.body) {
     block.x = point.x * block.w;
     block.y = point.y * block.h;
     SDL_RenderFillRect(sdl_renderer.get(), &block);
   }
 
   // Render enemy's head
-  block.x = static_cast<int>(enemySnake.head_x) * block.w;
-  block.y = static_cast<int>(enemySnake.head_y) * block.h;
+  block.x = 0;
+  block.y = static_cast<int>(enemy.head_y) * block.h;
   SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0x00, 0x00, 0xFF);
   SDL_RenderFillRect(sdl_renderer.get(), &block);
 }
