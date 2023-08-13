@@ -19,7 +19,7 @@ public:
 
 private:
   std::mutex _mutex;
-  Snake snake;
+  Snake snake, enemySnake;
   SDL_Point food;
 
   std::random_device dev;

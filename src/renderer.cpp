@@ -38,7 +38,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const& food) {
+void Renderer::Render(Snake const snake, Snake const enemy, SDL_Point const& food) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -53,6 +53,20 @@ void Renderer::Render(Snake const snake, SDL_Point const& food) {
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer.get(), &block);
 
+  RenderSnake(snake, block);
+  RenderEnemy(enemy, block);
+
+  // Update Screen
+  SDL_RenderPresent(sdl_renderer.get());
+}
+
+void Renderer::UpdateWindowTitle(int score, int fps, int higherScore) {
+  std::string title = higherScore != 0 ? "Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps) + " Higher Score: " + std::to_string(higherScore)
+    : "Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps);
+  SDL_SetWindowTitle(sdl_window.get(), title.c_str());
+}
+
+void Renderer::RenderSnake(Snake const snake, SDL_Rect block) {
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0xFF, 0xFF, 0xFF);
   for (SDL_Point const& point : snake.body) {
@@ -71,13 +85,19 @@ void Renderer::Render(Snake const snake, SDL_Point const& food) {
     SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0x00, 0x00, 0xFF);
   }
   SDL_RenderFillRect(sdl_renderer.get(), &block);
-
-  // Update Screen
-  SDL_RenderPresent(sdl_renderer.get());
 }
 
-void Renderer::UpdateWindowTitle(int score, int fps, int higherScore) {
-  std::string title = higherScore != 0 ? "Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps) + " Higher Score: " + std::to_string(higherScore)
-    : "Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps);
-  SDL_SetWindowTitle(sdl_window.get(), title.c_str());
+void Renderer::RenderEnemy(Snake const enemySnake, SDL_Rect block) {
+  //Render Enemy Snake Body
+  for (SDL_Point const& point : enemySnake.body) {
+    block.x = point.x * block.w;
+    block.y = point.y * block.h;
+    SDL_RenderFillRect(sdl_renderer.get(), &block);
+  }
+
+  // Render enemy's head
+  block.x = static_cast<int>(enemySnake.head_x) * block.w;
+  block.y = static_cast<int>(enemySnake.head_y) * block.h;
+  SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0x00, 0x00, 0xFF);
+  SDL_RenderFillRect(sdl_renderer.get(), &block);
 }

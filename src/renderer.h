@@ -24,8 +24,11 @@ public:
     const std::size_t grid_width, const std::size_t grid_height);
   ~Renderer();
 
-  void Render(Snake const snake, SDL_Point const& food);
+  void Render(Snake const snake, Snake const enemySnake, SDL_Point const& food);
   void UpdateWindowTitle(int score, int fps, int higherScore);
+
+  void RenderSnake(Snake const snake, SDL_Rect block);
+  void RenderEnemy(Snake const enemy, SDL_Rect block);
 
 private:
   std::unique_ptr<SDL_Window, SDLWindowDeleter> sdl_window;
