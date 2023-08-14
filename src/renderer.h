@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "snake.h"
 #include <memory>
+#include <mutex>
 
 struct SDLWindowDeleter {
   void operator()(SDL_Window* window) const {
@@ -24,12 +25,9 @@ public:
     const std::size_t grid_width, const std::size_t grid_height);
   ~Renderer();
 
-  void Render(Snake const snake, Snake const enemy, SDL_Point const& food);
   void UpdateWindowTitle(int score, int fps, int higherScore);
-
-  void RenderSnake(Snake const snake, SDL_Rect block);
-  void RenderEnemy(Snake const enemy, SDL_Rect block);
-
+  void RenderSnake(Snake const snake, SDL_Point const& food);
+  void RenderEnemy(Snake const enemy, SDL_Point const& food);
 private:
   std::unique_ptr<SDL_Window, SDLWindowDeleter> sdl_window;
   std::unique_ptr<SDL_Renderer, SDLRendererDeleter> sdl_renderer;
@@ -38,6 +36,7 @@ private:
   const std::size_t screen_height;
   const std::size_t grid_width;
   const std::size_t grid_height;
+  std::mutex _mutex;
 };
 
 #endif

@@ -38,7 +38,13 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, Snake const enemy, SDL_Point const& food) {
+void Renderer::UpdateWindowTitle(int score, int fps, int higherScore) {
+  std::string title = higherScore != 0 ? "Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps) + " Higher Score: " + std::to_string(higherScore)
+    : "Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps);
+  SDL_SetWindowTitle(sdl_window.get(), title.c_str());
+}
+
+void Renderer::RenderSnake(Snake const snake, SDL_Point const& food) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -53,20 +59,6 @@ void Renderer::Render(Snake const snake, Snake const enemy, SDL_Point const& foo
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer.get(), &block);
 
-  RenderSnake(snake, block);
-  RenderEnemy(enemy, block);
-
-  // Update Screen
-  SDL_RenderPresent(sdl_renderer.get());
-}
-
-void Renderer::UpdateWindowTitle(int score, int fps, int higherScore) {
-  std::string title = higherScore != 0 ? "Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps) + " Higher Score: " + std::to_string(higherScore)
-    : "Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps);
-  SDL_SetWindowTitle(sdl_window.get(), title.c_str());
-}
-
-void Renderer::RenderSnake(Snake const snake, SDL_Rect block) {
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0xFF, 0xFF, 0xFF);
   for (SDL_Point const& point : snake.body) {
@@ -85,10 +77,29 @@ void Renderer::RenderSnake(Snake const snake, SDL_Rect block) {
     SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0x00, 0x00, 0xFF);
   }
   SDL_RenderFillRect(sdl_renderer.get(), &block);
+
+  // Update Screen
+  std::lock_guard<std::mutex> lock(_mutex);
+  SDL_RenderPresent(sdl_renderer.get());
 }
 
-void Renderer::RenderEnemy(Snake const enemy, SDL_Rect block) {
-  //Render Enemy Snake Body
+void Renderer::RenderEnemy(Snake const enemy, SDL_Point const& food) {
+  SDL_Rect block;
+  block.w = screen_width / grid_width;
+  block.h = screen_height / grid_height;
+
+  // Clear screen
+  SDL_SetRenderDrawColor(sdl_renderer.get(), 0x1E, 0x1E, 0x1E, 0xFF);
+  SDL_RenderClear(sdl_renderer.get());
+
+  // Render food
+  SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0xCC, 0x00, 0xFF);
+  block.x = food.x * block.w;
+  block.y = food.y * block.h;
+  SDL_RenderFillRect(sdl_renderer.get(), &block);
+
+  // Render enemy's body
+  SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0xFF, 0xFF, 0xFF);
   for (SDL_Point const& point : enemy.body) {
     block.x = point.x * block.w;
     block.y = point.y * block.h;
@@ -96,8 +107,13 @@ void Renderer::RenderEnemy(Snake const enemy, SDL_Rect block) {
   }
 
   // Render enemy's head
-  block.x = 0;
+  block.x = static_cast<int>(enemy.head_x) * block.w;
   block.y = static_cast<int>(enemy.head_y) * block.h;
+
   SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0x00, 0x00, 0xFF);
   SDL_RenderFillRect(sdl_renderer.get(), &block);
+
+  // Update Screen
+  std::lock_guard<std::mutex> lock(_mutex);
+  SDL_RenderPresent(sdl_renderer.get());
 }

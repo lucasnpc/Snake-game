@@ -1,5 +1,4 @@
 #include <iostream>
-#include <future>
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
@@ -18,13 +17,10 @@ void executeGame() {
   std::future<void> ftr;
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
-  Game game(kGridWidth, kGridHeight);
   Score score;
-  ftr = std::async(std::launch::deferred, [&game, &controller, &renderer, kMsPerFrame, &score]() {
-    game.Run(controller, renderer, kMsPerFrame, score.getHighestScore());
-    });
+  Game game(kGridWidth, kGridHeight, score.getHighestScore());
+  game.Run(controller, renderer, kMsPerFrame);
 
-  ftr.wait();
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";
   std::cout << "Size: " << game.GetSize() << "\n";
