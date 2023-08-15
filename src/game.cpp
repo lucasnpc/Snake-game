@@ -49,8 +49,8 @@ void Game::PlaceFood() {
     // Check that the location is not occupied by a snake item before placing
     // food.
     if (!snake.SnakeCell(x, y) || !enemy.SnakeCell(x, y)) {
-      food.x = x;
-      food.y = y;
+      food.x = 1;
+      food.y = 28;
       return;
     }
   }
@@ -94,6 +94,8 @@ void Game::UpdateEnemy(Controller const& controller, Renderer& renderer, std::si
   while (running)
   {
     if (!snake.alive) break;
+
+    controller.HandleEnemyMove(running, enemy, food);
 
     enemy.Update();
 

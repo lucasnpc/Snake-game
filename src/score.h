@@ -7,7 +7,6 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
-#define printVariableNameAndValue(x) std::cout<<"The name of variable **"<<(#x)<<"** and the value of variable is => "<<x<<"\n"
 
 class Score {
 public:
