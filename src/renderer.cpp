@@ -48,6 +48,7 @@ void Renderer::RenderSnake(Snake const snake, SDL_Point const& food) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
+  std::lock_guard<std::mutex> lock(_mutex);
 
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer.get(), 0x1E, 0x1E, 0x1E, 0xFF);
@@ -79,7 +80,6 @@ void Renderer::RenderSnake(Snake const snake, SDL_Point const& food) {
   SDL_RenderFillRect(sdl_renderer.get(), &block);
 
   // Update Screen
-  std::lock_guard<std::mutex> lock(_mutex);
   SDL_RenderPresent(sdl_renderer.get());
 }
 
@@ -87,6 +87,7 @@ void Renderer::RenderEnemy(Snake const enemy, SDL_Point const& food) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
+  std::lock_guard<std::mutex> lock(_mutex);
 
   // Render food
   SDL_SetRenderDrawColor(sdl_renderer.get(), 0xFF, 0xCC, 0x00, 0xFF);
@@ -110,6 +111,5 @@ void Renderer::RenderEnemy(Snake const enemy, SDL_Point const& food) {
   SDL_RenderFillRect(sdl_renderer.get(), &block);
 
   // Update Screen
-  std::lock_guard<std::mutex> lock(_mutex);
   SDL_RenderPresent(sdl_renderer.get());
 }
