@@ -88,7 +88,7 @@ std::vector<std::vector<State>> Search(std::vector<std::vector<State>> grid, int
     // Check if we're done.
     if (x == goal[0] && y == goal[1]) {
       grid[init[0]][init[1]] = State::kStart;
-      grid[goal[0]][goal[1]] = State::kFinish;
+      grid[goal[0]][goal[1]] = State::kPath;
       return grid;
     }
 

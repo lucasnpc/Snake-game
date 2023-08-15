@@ -56,30 +56,26 @@ void Controller::HandleEnemyMove(bool& running, Snake& enemy, SDL_Point& food) c
   }
 
   auto solution = Search(grid, init, goal);
-  for (size_t x = 0; x < solution.size(); ++x)
+  for (size_t x = 0; x < 32; ++x)
   {
-    for (size_t y = 0; y < solution[x].size(); ++y)
+    for (size_t y = 0; y < 32; ++y)
     {
       if (isNeighbor(enemy.head_x, enemy.head_y, x, y) && solution[x][y] == State::kPath) {
-        if (x >= static_cast<int>(enemy.head_x)) {
+        if (x > static_cast<int>(enemy.head_x)) {
           ChangeDirection(enemy, Snake::Direction::kRight,
             Snake::Direction::kLeft);
-          break;
         }
-        else if (x <= static_cast<int>(enemy.head_x)) {
+        else if (x < static_cast<int>(enemy.head_x)) {
           ChangeDirection(enemy, Snake::Direction::kLeft,
             Snake::Direction::kRight);
-          break;
         }
-        else if (y >= static_cast<int>(enemy.head_y)) {
+        if (y > static_cast<int>(enemy.head_y)) {
           ChangeDirection(enemy, Snake::Direction::kDown,
             Snake::Direction::kUp);
-          break;
         }
-        else if (y <= static_cast<int>(enemy.head_y)) {
+        else if (y < static_cast<int>(enemy.head_y)) {
           ChangeDirection(enemy, Snake::Direction::kUp,
             Snake::Direction::kDown);
-          break;
         }
       }
     }

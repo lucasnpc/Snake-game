@@ -4,7 +4,7 @@
 
 Game::Game(std::size_t grid_width, std::size_t grid_height, int _higherScore) :
   snake(grid_width, grid_height),
-  enemy(1, grid_height),
+  enemy(grid_width, grid_height),
   engine(dev()),
   random_w(0, static_cast<int>(grid_width - 1)),
   random_h(0, static_cast<int>(grid_height - 1)),
@@ -49,8 +49,8 @@ void Game::PlaceFood() {
     // Check that the location is not occupied by a snake item before placing
     // food.
     if (!snake.SnakeCell(x, y) || !enemy.SnakeCell(x, y)) {
-      food.x = 1;
-      food.y = 28;
+      food.x = x;
+      food.y = y;
       return;
     }
   }
