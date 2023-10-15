@@ -1,18 +1,28 @@
 # About the CPP Nanodegree Program Capstone Project: Snake Game Example
 
-The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
-This project is the capstone project you need to develop to get the certificate in the C++ Nanodegree program at Udacity. 
-Your project need must satisfy these conditions to succeed in this program:
+The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses. This is the capstone project you need to develop to get certified in Udacity's C++ Nanodegree program. To obtain this certification, your project must satisfy these conditions:
 
+* The project demonstrates an understanding of C++ functions and control structures.
+  * The submission must compile and run.
 * Loops, Functions and I/O
-  * In the Project im using many data structures, conditionals, loops and different flows.
+  * The project demonstrates an understanding of C++ functions and control structures.
+  * The project reads data from a file and process the data, or the program writes data to a file.
+  * The project accepts user input and processes the input.
 * Object Oriented Programming
-  * The Project was created using OOP programming with classes structure and separating header files from the implementation
+  * The project uses Object Oriented Programming techniques.
+  * Classes use appropriate access specifiers for class members.
+  * Class constructors utilize member initialization lists.
+  * Templates generalize functions in the project.
 * Memory Management
-  * In the Project im using smart pointers and memory management at classes Renderer, and cleaning its usage at the the end Game::Run method.
+  * The project makes use of references in function declarations.
+  * The project uses destructors appropriately.
+  * The project uses move semantics to move data, instead of copying it, where possible.
+  * The project uses smart pointers instead of raw pointers.
 * Concurrency
-  * In the Project im using Mutexes and future to run the Game::Run method, together with it im using mutex lock_guard for safe mutex unlock.
-
+  * The project uses multithreading.
+  * A promise and future is used in the project.
+  * A mutex or lock is used in the project.
+ 
 <img src="updated-snake_game.gif"/>
 
 ## Technologies in use in this project
