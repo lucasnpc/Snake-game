@@ -1,10 +1,8 @@
-# CPPND: Capstone Snake Game Example
+# About the CPP Nanodegree Program Capstone Project: Snake Game Example
 
-This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
-
-<img src="updated-snake_game.gif"/>
-
-## Project Rubric
+The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
+This project is the capstone project you need to develop to get the certificate in the C++ Nanodegree program at Udacity. 
+Your project need must satisfy these conditions to succeed in this program:
 
 * Loops, Functions and I/O
   * In the Project im using many data structures, conditionals, loops and different flows.
@@ -14,6 +12,17 @@ This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree P
   * In the Project im using smart pointers and memory management at classes Renderer, and cleaning its usage at the the end Game::Run method.
 * Concurrency
   * In the Project im using Mutexes and future to run the Game::Run method, together with it im using mutex lock_guard for safe mutex unlock.
+
+<img src="updated-snake_game.gif"/>
+
+## Technologies in use in this project
+* Mutexes (Lock and unlock threads)
+* Cmake and Make
+* A-Star Algorithm (Used to create an automatic enemy snake)
+* SDL Library (Used to render rectangles in the screen, you can find more [here](https://wiki.libsdl.org/SDL2/APIByCategory))
+* Smart pointers
+* Files Management
+* Futures (to run Multithreading)
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
