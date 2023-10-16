@@ -1,5 +1,7 @@
 # About the CPP Nanodegree Program Capstone Project: Snake Game Example
 
+<img src="updated-snake_game.gif"/>
+
 The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses. This is the capstone project you need to develop to get certified in Udacity's C++ Nanodegree program. To obtain this certification, your project must satisfy these conditions:
 
 * The project demonstrates an understanding of C++ functions and control structures.
@@ -31,8 +33,6 @@ The code for this repo was inspired by [this](https://codereview.stackexchange.c
   * A promise and future is used to pass data from a worker thread to a parent thread in the project code.
   * A mutex or lock (e.g. std::lock_guard or `std::unique_lock) is used to protect data that is shared across multiple threads in the project code.
   * A std::condition_variable is used in the project code to synchronize thread execution.
- 
-<img src="updated-snake_game.gif"/>
 
 ## Technologies in use in this project
 * Mutexes (Lock and unlock threads)
