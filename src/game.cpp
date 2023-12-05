@@ -14,41 +14,44 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, int _higherScore) :
 
 void Game::Run(Controller const& controller, Renderer& renderer,
   std::size_t target_frame_duration) {
+  while (running)
+  {
+    frame_start = SDL_GetTicks();
 
-  futures.emplace_back(std::async(std::launch::deferred, [&]() {
-    Update(controller, renderer, target_frame_duration);
-    }));
-  futures.emplace_back(std::async(std::launch::async, [&]() {
-    UpdateEnemy(controller, renderer, target_frame_duration);
-    }));
-  futures.emplace_back(std::async(std::launch::async, [&]() {
-    while (running)
-    {
-      if (!snake.alive) break;
+    controller.HandleInput(running, snake);
+    controller.HandleEnemyMove(running, enemy, food);
 
-      if (frame_end - title_timestamp >= 1000) {
-        renderer.UpdateWindowTitle(score, frame_count, higherScore);
-        frame_count = 0;
-        title_timestamp = frame_end;
-      }
+    Update();
+
+    renderer.RenderSnakeAndEnemy(snake, enemy, food);
+
+    frame_end = SDL_GetTicks();
+    frame_count++;
+    frame_duration = frame_end - frame_start;
+
+    // After every second, update the window title.
+    if (frame_end - title_timestamp >= 1000) {
+      renderer.UpdateWindowTitle(score, frame_count, higherScore);
+      frame_count = 0;
+      title_timestamp = frame_end;
     }
-    }));
 
-  for (auto& ftr : futures) {
-    ftr.wait();
+    // If the time for this frame is too small (i.e. frame_duration is
+    // smaller than the target ms_per_frame), delay the loop to
+    // achieve the correct frame rate.
+    if (frame_duration < target_frame_duration) {
+      SDL_Delay(target_frame_duration - frame_duration);
+    }
   }
-
-  renderer.~Renderer();
 }
 
 void Game::PlaceFood() {
-  int x, y;
   while (true) {
-    x = random_w(engine);
-    y = random_h(engine);
+    int x = random_w(engine);
+    int y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake.SnakeCell(x, y) || !enemy.SnakeCell(x, y)) {
+    if (!snake.SnakeCell(x, y) && !enemy.SnakeCell(x, y)) {
       food.x = x;
       food.y = y;
       return;
@@ -56,64 +59,31 @@ void Game::PlaceFood() {
   }
 }
 
-void Game::Update(Controller const& controller, Renderer& renderer, std::size_t target_frame_duration) {
-  while (running)
-  {
-    if (!snake.alive) break;
-    frame_start = SDL_GetTicks();
+void Game::Update() {
+  if (!snake.alive) return;
 
-    controller.HandleInput(running, snake);
+  snake.Update();
+  enemy.Update();
 
-    snake.Update();
+  auto new_x = static_cast<int>(snake.head_x);
+  auto new_y = static_cast<int>(snake.head_y);
 
-    int new_x = static_cast<int>(snake.head_x);
-    int new_y = static_cast<int>(snake.head_y);
+  auto enemy_new_x = static_cast<int>(enemy.head_x);
+  auto enemy_new_y = static_cast<int>(enemy.head_y);
 
-    // Check if there's food over here
-    if (food.x == new_x && food.y == new_y) {
-      score++;
-      PlaceFood();
-      // Grow snake and increase speed.
-      snake.GrowBody();
-      snake.speed += (0.02 * Game::difficult);
-    }
-
-    renderer.RenderSnake(snake, food);
-
-    frame_end = SDL_GetTicks();
-    frame_count++;
-    frame_duration = frame_end - frame_start;
-
-    if (frame_duration < target_frame_duration) {
-      SDL_Delay(target_frame_duration - frame_duration);
-    }
+  // Check if there's food over here
+  if (food.x == new_x && food.y == new_y) {
+    score++;
+    PlaceFood();
+    // Grow snake and increase speed.
+    snake.GrowBody();
+    snake.speed += (0.02 * Game::difficult);
   }
-}
-
-void Game::UpdateEnemy(Controller const& controller, Renderer& renderer, std::size_t target_frame_duration) {
-  while (running)
-  {
-    if (!snake.alive) break;
-
-    controller.HandleEnemyMove(running, enemy, food);
-
-    enemy.Update();
-
-    int new_x = static_cast<int>(enemy.head_x);
-    int new_y = static_cast<int>(enemy.head_y);
-
-    // Check if there's food over here
-    if (food.x == new_x && food.y == new_y) {
-      PlaceFood();
-      // Grow enemy and increase speed.
-      enemy.GrowBody();
-    }
-
-    renderer.RenderEnemy(enemy, food);
-
-    if (frame_duration < target_frame_duration) {
-      SDL_Delay(target_frame_duration - frame_duration);
-    }
+  else if (food.x == enemy_new_x && food.y == enemy_new_y) {
+    PlaceFood();
+    // Grow enemy and increase speed.
+    enemy.GrowBody();
+    enemy.speed += (0.005 * Game::difficult);
   }
 }
 

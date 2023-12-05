@@ -26,8 +26,7 @@ public:
   ~Renderer();
 
   void UpdateWindowTitle(int score, int fps, int higherScore);
-  void RenderSnake(Snake const snake, SDL_Point const& food);
-  void RenderEnemy(Snake const enemy, SDL_Point const& food);
+  void RenderSnakeAndEnemy(Snake const& snake, Snake const& enemy, SDL_Point const& food);
 private:
   std::unique_ptr<SDL_Window, SDLWindowDeleter> sdl_window;
   std::unique_ptr<SDL_Renderer, SDLRendererDeleter> sdl_renderer;

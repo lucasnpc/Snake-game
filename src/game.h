@@ -32,8 +32,7 @@ private:
   int higherScore{ 0 };
 
   void PlaceFood();
-  void Update(Controller const& controller, Renderer& renderer, std::size_t target_frame_duration);
-  void UpdateEnemy(Controller const& controller, Renderer& renderer, std::size_t target_frame_duration);
+  void Update();
 
   bool running = true;
   Uint32 frame_start, frame_end, frame_duration;
